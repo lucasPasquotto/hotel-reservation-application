@@ -45,11 +45,11 @@ public class Room implements IRoom {
         if ((obj == null) || (obj.getClass() != this.getClass()))
             return false;
         Room room = (Room) obj;
-        return roomNumber.equals(room.roomNumber);
+        return roomNumber.equals(room.roomNumber) && price.equals(room.price) && type.equals(room.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomNumber);
+        return Objects.hash(roomNumber, price, type);
     }
 }
