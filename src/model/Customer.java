@@ -11,14 +11,7 @@ public class Customer {
     public Customer(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-
-        String emailRegex = "^(.+)@(.+).(.+)$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        if (!pattern.matcher(email).matches()) {
-            throw new IllegalArgumentException("Invalid email");
-        }
-
-        this.email = email;
+        this.email = validateEmail(email);
     }
 
     public String getFirstName() {
@@ -33,6 +26,15 @@ public class Customer {
         return this.email;
     }
 
+    private String validateEmail(String email) {
+        String emailRegex = "^(.+)@(.+).(.+)$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        if (!pattern.matcher(email).matches()) {
+            throw new IllegalArgumentException("Invalid email");
+        }
+        return email;
+    }
+
     @Override
     public String toString() {
         return "Customer: " + firstName + " " + lastName + " email: " + email;
@@ -45,11 +47,11 @@ public class Customer {
         if ((obj == null) || (obj.getClass() != this.getClass()))
             return false;
         Customer customer = (Customer) obj;
-        return email.equals(customer.email);
+        return firstName.equals(customer.firstName) && lastName.equals(customer.lastName) && email.equals(customer.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email);
+        return Objects.hash(firstName, lastName, email);
     }
 }
