@@ -1,3 +1,5 @@
+package model;
+
 import model.Customer;
 
 public class Driver {
