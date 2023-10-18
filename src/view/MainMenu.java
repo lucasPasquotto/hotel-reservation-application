@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    public static void start() {
+    public static void mainMenu() {
         Scanner scanner = new Scanner(System.in);
         String input;
 
@@ -34,20 +34,20 @@ public class MainMenu {
                         System.out.println("Item 3.");
                         break;
                     case '4':
-                        System.out.println("Item 4.");
+                        AdminMenu.adminMenu();
                         break;
                     case '5':
                         System.out.println("Exiting Hotel Reservation Application.");
                         break;
                     default:
                         System.out.println("Please select an valid option.");
-                        start();
+                        mainMenu();
                         break;
                 }
             } while (input.charAt(0) != '5');
         } catch (StringIndexOutOfBoundsException ex) {
             System.out.println("Please select an valid option.");
-            start();
+            mainMenu();
         }
     }
 }
