@@ -10,7 +10,7 @@ public class CustomerService {
 
     // initialize the only object in CustomerService Singleton class
     private static final CustomerService customerService = new CustomerService();
-    private Map<String, Customer> custumers;
+    private final Map<String, Customer> custumers;
 
     // this private constructor prevents the client app
     // from creating the CustomerService class instance
@@ -18,7 +18,7 @@ public class CustomerService {
         this.custumers = new HashMap<String, Customer>();
     }
 
-    public CustomerService getInstance() {
+    public static CustomerService getInstance() {
         return customerService;
     }
 
