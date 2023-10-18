@@ -5,17 +5,14 @@ import model.IRoom;
 import model.Reservation;
 import model.Room;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ReservationService {
     // initialize the only object in CustomerService Singleton class
     private static final ReservationService reservationService = new ReservationService();
-    private Map<Customer, Reservation> reservations;
-    private Map<String, IRoom> rooms;
+    private final Map<Customer, Reservation> reservations;
+    private final Map<String, IRoom> rooms;
 
     // this private constructor prevents the client app
     // from creating the CustomerService class instance
@@ -24,7 +21,7 @@ public class ReservationService {
         this.rooms = new HashMap<String, IRoom>();
     }
 
-    public ReservationService getInstance() {
+    public static ReservationService getInstance() {
         return reservationService;
     }
 
@@ -36,6 +33,10 @@ public class ReservationService {
         return this.rooms.get(roomNumber);
     }
 
+    public Collection<IRoom> getAllRooms() {
+        return this.rooms.values();
+    }
+
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
         Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
         this.reservations.put(customer, reservation);
@@ -43,7 +44,20 @@ public class ReservationService {
     }
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
-        return null;
+        Collection<IRoom> unavailableRooms = new ArrayList<IRoom>();
+
+        Collection<Reservation> reservationList = reservations.values();
+
+        for (Reservation reservation : reservationList) {
+            if (reservation.getCheckInDate().compareTo(checkInDate) >= 0 || reservation.getCheckOutDate().compareTo(checkOutDate) <= 0) {
+                unavailableRooms.add(reservation.getRoom());
+            }
+        }
+
+        Collection<IRoom> availableRooms = this.rooms.values();
+        availableRooms.removeAll(unavailableRooms);
+
+        return availableRooms;
     }
 
     public Collection<Reservation> getCustomersReservation(Customer customer) {
