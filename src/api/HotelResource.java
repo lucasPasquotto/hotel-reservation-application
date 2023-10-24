@@ -28,8 +28,8 @@ public class HotelResource {
         return customerService.getCustomer(email);
     }
 
-    public void createACustomer(String email, String firstName, String lastName) {
-        customerService.addCustomer(email, firstName, lastName);
+    public void createACustomer(String firstName, String lastName, String email) throws IllegalArgumentException {
+        customerService.addCustomer(firstName, lastName, email);
     }
 
     public IRoom getRoom(String roomNumber) {
