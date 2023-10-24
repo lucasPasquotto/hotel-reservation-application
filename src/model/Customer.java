@@ -8,7 +8,7 @@ public class Customer {
     private String lastName;
     private String email;
 
-    public Customer(String firstName, String lastName, String email) {
+    public Customer(String firstName, String lastName, String email) throws IllegalArgumentException {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = validateEmail(email);
@@ -26,7 +26,7 @@ public class Customer {
         return this.email;
     }
 
-    private String validateEmail(String email) {
+    private String validateEmail(String email) throws IllegalArgumentException {
         String emailRegex = "^(.+)@(.+).(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);
         if (!pattern.matcher(email).matches()) {
