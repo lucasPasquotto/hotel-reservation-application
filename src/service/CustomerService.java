@@ -22,8 +22,8 @@ public class CustomerService {
         return customerService;
     }
 
-    public void addCustomer(String email, String firstName, String lastName) {
-        this.custumers.put(email, new Customer(email, firstName, lastName));
+    public void addCustomer(String firstName, String lastName, String email) throws IllegalArgumentException {
+        this.custumers.put(email, new Customer(firstName, lastName, email));
     }
 
     public Customer getCustomer(String customerEmail) {
