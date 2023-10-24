@@ -49,7 +49,7 @@ public class ReservationService {
         Collection<Reservation> reservationList = reservations.values();
 
         for (Reservation reservation : reservationList) {
-            if (reservation.getCheckInDate().compareTo(checkInDate) >= 0 || reservation.getCheckOutDate().compareTo(checkOutDate) <= 0) {
+            if (reservation.getCheckInDate().compareTo(checkInDate) >= 0 && reservation.getCheckOutDate().compareTo(checkOutDate) <= 0) {
                 unavailableRooms.add(reservation.getRoom());
             }
         }
