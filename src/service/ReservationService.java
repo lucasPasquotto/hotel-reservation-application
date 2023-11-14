@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
 public class ReservationService {
     // initialize the only object in CustomerService Singleton class
     private static final ReservationService reservationService = new ReservationService();
-    private final Map<Customer, Reservation> reservations;
+    private final ArrayList<Reservation> reservations;
     private final Map<String, IRoom> rooms;
 
     // this private constructor prevents the client app
     // from creating the CustomerService class instance
     private ReservationService() {
-        this.reservations = new HashMap<Customer, Reservation>();
+        this.reservations = new ArrayList<>();
         this.rooms = new HashMap<String, IRoom>();
     }
 
@@ -39,30 +39,27 @@ public class ReservationService {
 
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
         Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
-        this.reservations.put(customer, reservation);
+        this.reservations.add(reservation);
         return reservation;
     }
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
         Collection<IRoom> unavailableRooms = new ArrayList<IRoom>();
 
-        Collection<Reservation> reservationList = reservations.values();
-
-        for (Reservation reservation : reservationList) {
-            if (reservation.getCheckInDate().compareTo(checkInDate) >= 0 && reservation.getCheckOutDate().compareTo(checkOutDate) <= 0) {
+        for (Reservation reservation : reservations) {
+            if (reservation.getCheckInDate().compareTo(checkInDate) >= 0 && checkOutDate.compareTo(reservation.getCheckOutDate()) <= 0) {
                 unavailableRooms.add(reservation.getRoom());
             }
         }
 
-        Collection<IRoom> availableRooms = this.rooms.values();
+        Collection<IRoom> availableRooms = new ArrayList<>(this.rooms.values());
         availableRooms.removeAll(unavailableRooms);
 
         return availableRooms;
     }
 
     public Collection<Reservation> getCustomersReservation(Customer customer) {
-        return this.reservations.values()
-                .stream()
+        return this.reservations.stream()
                 .filter(reservation -> reservation.getCustomer().equals(customer))
                 .collect(Collectors.toList());
     }
@@ -71,7 +68,7 @@ public class ReservationService {
         if (this.reservations.isEmpty()) {
             System.out.println("No reservations");
         } else {
-            this.reservations.values().forEach(reservation -> {
+            this.reservations.forEach(reservation -> {
                 System.out.println(reservation.toString());
             });
         }

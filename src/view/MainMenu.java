@@ -71,8 +71,23 @@ public class MainMenu {
         Collection<IRoom> avaliableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
 
         if (avaliableRooms.isEmpty()) {
-            System.out.println("We are booked out for this dates, sorry!");
-            mainMenu();
+            Calendar dates = Calendar.getInstance();
+            dates.setTime(checkInDate);
+            dates.add(Calendar.DATE, 7);
+            checkInDate = dates.getTime();
+
+            dates.setTime(checkOutDate);
+            dates.add(Calendar.DATE, 7);
+            checkOutDate = dates.getTime();
+
+            avaliableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
+
+            if (!avaliableRooms.isEmpty()) {
+                System.out.println("We suggest you this new dates! [" + checkInDate + " / " + checkOutDate + "]");
+            } else {
+                System.out.println("We are booked out for this dates, sorry!");
+                mainMenu();
+            }
         }
 
         System.out.println("Here is a list of our Available Rooms");

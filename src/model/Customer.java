@@ -27,7 +27,7 @@ public class Customer {
     }
 
     private String validateEmail(String email) throws IllegalArgumentException {
-        String emailRegex = "^(.+)@(.+).(.+)$";
+        String emailRegex = "^(.+)@(.+)\\.(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);
         if (!pattern.matcher(email).matches()) {
             throw new IllegalArgumentException("Invalid email");
