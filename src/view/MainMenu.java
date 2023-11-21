@@ -17,18 +17,11 @@ public class MainMenu {
         Scanner scanner = new Scanner(System.in);
         String input;
 
-        System.out.println("Welcome to the Hotel Reservation Application!");
-        System.out.println("-------------------------------------------");
-        System.out.println("1. Find and reserve a room");
-        System.out.println("2. See my reservations");
-        System.out.println("3. Create an Account");
-        System.out.println("4. Admin");
-        System.out.println("5. Exit");
-        System.out.println("-------------------------------------------");
-        System.out.println("Please select a number for the menu option:");
 
         try {
             do {
+                printMainMenu();
+
                 input = scanner.nextLine();
 
                 switch (input.charAt(0)) {
@@ -49,7 +42,6 @@ public class MainMenu {
                         break;
                     default:
                         System.out.println("Please select an valid option.");
-                        mainMenu();
                         break;
                 }
             } while (input.charAt(0) != '5');
@@ -59,14 +51,34 @@ public class MainMenu {
         }
     }
 
+    public static void printMainMenu() {
+        System.out.println("Welcome to the Hotel Reservation Application!");
+        System.out.println("-------------------------------------------");
+        System.out.println("1. Find and reserve a room");
+        System.out.println("2. See my reservations");
+        System.out.println("3. Create an Account");
+        System.out.println("4. Admin");
+        System.out.println("5. Exit");
+        System.out.println("-------------------------------------------");
+        System.out.println("Please select a number for the menu option:");
+    }
+
     public static void findAndReserveARoom() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Check-in date [dd/mm/yyyy]:");
         Date checkInDate = parseDate(scanner.nextLine());
 
+        if (checkInDate == null) {
+            return;
+        }
+
         System.out.println("Check-out date [dd/mm/yyyy]:");
         Date checkOutDate = parseDate(scanner.nextLine());
+
+        if (checkOutDate == null) {
+            return;
+        }
 
         Collection<IRoom> avaliableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
 
@@ -86,7 +98,7 @@ public class MainMenu {
                 System.out.println("We suggest you this new dates! [" + checkInDate + " / " + checkOutDate + "]");
             } else {
                 System.out.println("We are booked out for this dates, sorry!");
-                mainMenu();
+                return;
             }
         }
 
@@ -107,7 +119,7 @@ public class MainMenu {
 
             if (hotelResource.getCustomer(customerEmail) == null) {
                 System.out.println("Account not founded");
-                mainMenu();
+                return;
             }
 
             System.out.println("\nEnter the room number you like to reserve: ");
@@ -119,7 +131,7 @@ public class MainMenu {
                 System.out.println(reservation.toString());
             } else {
                 System.out.println("\nRoom not available");
-                mainMenu();
+                return;
             };
         }
     }
@@ -130,7 +142,6 @@ public class MainMenu {
             return format.parse(date);
         } catch (ParseException exception) {
             System.out.println("Invalid date, restart the reservation");
-            mainMenu();
         }
         return null;
     }
@@ -150,8 +161,6 @@ public class MainMenu {
             System.out.println("Account created !");
         } catch (IllegalArgumentException exception) {
             System.out.println("Error: " + exception.getLocalizedMessage());
-        } finally {
-            mainMenu();
         }
     }
 
@@ -170,7 +179,5 @@ public class MainMenu {
                 System.out.println(reservation.toString());
             }
         }
-
-        mainMenu();
     }
 }
